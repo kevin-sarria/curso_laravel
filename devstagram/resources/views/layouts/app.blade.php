@@ -16,7 +16,9 @@
 
             <div class="container mx-auto flex justify-between">
                 <h1 class="text-3xl font-black">
-                    Devstagram
+                    <a href="{{ route('home') }}">
+                        Devstagram
+                    </a>
                 </h1>
 
                 @auth

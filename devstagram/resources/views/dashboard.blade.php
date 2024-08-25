@@ -97,7 +97,7 @@
             @foreach($posts as $post)
                 <div>
 
-                    <a href="{{ route('posts.show', [ 'post' => $post, 'user' => $user ]) }}">
+                    <a href="{{ route('posts.show', [ 'post' => $post, 'user' => $post->user ]) }}">
                         <img src="{{ asset('uploads') . '/' . $post->imagen }}" alt="Imagen del post {{ $post->titulo }}" />
                     </a>
 
