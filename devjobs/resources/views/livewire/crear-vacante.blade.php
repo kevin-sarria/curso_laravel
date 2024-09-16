@@ -5,7 +5,7 @@
         <x-text-input
             id="titulo"
             class="block mt-1 w-full"
-            type="email"
+            type="text"
             wire:model="titulo"
             :value="old('titulo')"
             placeholder="Titulo Vacante"
@@ -55,7 +55,7 @@
         <x-text-input
             id="empresa"
             class="block mt-1 w-full"
-            type="email"
+            type="text"
             wire:model="empresa"
             :value="old('empresa')"
             placeholder="Empresa: ej. Netflix, Uber, Shopify..."
