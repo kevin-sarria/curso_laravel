@@ -1,7 +1,10 @@
-import { categorias } from '../data';
+import { useQuiosco } from '../hooks';
 import { Categoria } from './';
 
 export const Sidebar = () => {
+
+  const { categorias } = useQuiosco();
+
   return (
     <aside className="md:w-72">
 
