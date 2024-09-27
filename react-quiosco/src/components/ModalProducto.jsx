@@ -1,21 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { functions } from "../helpers";
 import { useQuiosco } from "../hooks"
 
 export const ModalProducto = () => {
     
-    const { producto, handleClickModal } = useQuiosco();
-
+    const { producto, handleClickModal, handleAgregarPedido, pedido } = useQuiosco();
     const [ cantidad, setCantidad ] = useState(1);
+    const [ edicion, setEdicion ] = useState(false);
+    
     const { id, nombre, precio, imagen } = producto;
     const { formatearDinero } = functions;
 
-    const handleSetCantidad = (cantidad) => {
-        setCantidad( prev => {
-            if(prev + cantidad < 1 || prev + cantidad > 5) return prev;
-            return prev + cantidad;
-        } );
-    }
+    useEffect( () => {
+        if( pedido.some( pedidoState => pedidoState.id === id ) ) {
+            const productoEdicion = pedido.filter( pedidoState => pedidoState.id === id )[0];
+
+            setCantidad(productoEdicion.cantidad);
+            setEdicion(true);
+        }
+    }, [pedido] );
 
   return (
     <div className="md:flex gap-10">
@@ -28,8 +31,8 @@ export const ModalProducto = () => {
                 <button
                     onClick={handleClickModal}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </button>
             </div>
@@ -42,10 +45,13 @@ export const ModalProducto = () => {
                 <button
                     type="button"
                     className=""
-                    onClick={ () => handleSetCantidad(-1) }
+                    onClick={ () => {
+                        if( cantidad <= 1 ) return;
+                        setCantidad( cantidad - 1 );
+                    } }
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </button>
 
@@ -54,10 +60,13 @@ export const ModalProducto = () => {
                 <button
                     type="button"
                     className=""
-                    onClick={ () => handleSetCantidad(1) }
+                    onClick={ () => {
+                        if( cantidad >= 5 ) return;
+                        setCantidad( cantidad + 1 );
+                    } }
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </button>
 
@@ -66,9 +75,12 @@ export const ModalProducto = () => {
             <button
                 type="button"
                 className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 mt-5 text-white font-bold uppercase rounded"
-                onClick={ () => {} }
+                onClick={ () => {
+                    handleAgregarPedido({ ...producto, cantidad })
+                    handleClickModal();
+                } }
             >
-                Agregar al pedido
+                { edicion ? 'Guardar Cambios' : 'Agregar al Pedido' }
             </button>
 
         </div>

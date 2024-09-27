@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Modal from 'react-modal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useQuiosco } from '../hooks';
 import { Sidebar, Resumen, ModalProducto } from '../components'
@@ -40,6 +42,8 @@ export const Layout = () => {
       >
         <ModalProducto />
       </Modal>
+
+      <ToastContainer />
     </>
   )
 }
