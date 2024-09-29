@@ -1,6 +1,35 @@
+import { createRef, useState } from 'react';
 import { Link } from "react-router-dom"
+import { clienteAxios } from '../config';
 
 export const Registro = () => {
+
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
+  const passwordConfirmationRef = createRef();
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    const datos = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      password_confirmation: passwordConfirmationRef.current.value,
+    }
+
+    try {
+      const respuesta = await clienteAxios.post('/api/registro', datos);
+
+      console.log(respuesta);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   return (
     <>
 
@@ -9,7 +38,9 @@ export const Registro = () => {
 
       <div className="bg-white shadow-md rounded-md mt-10 px-55 py-10">
 
-        <form action="">
+        <form
+          onSubmit={handleSubmit}
+        >
 
           <div className="mb-4">
             <label
@@ -25,7 +56,7 @@ export const Registro = () => {
               id="name"
               placeholder="Tu Nombre"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={nameRef}
             />
           </div>
 
@@ -43,7 +74,7 @@ export const Registro = () => {
               id="email"
               placeholder="Tu Email"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={emailRef}
             />
           </div>
 
@@ -61,7 +92,7 @@ export const Registro = () => {
               id="password"
               placeholder="Tu Password"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={passwordRef}
             />
           </div>
 
@@ -79,7 +110,7 @@ export const Registro = () => {
               id="password_confirmation"
               placeholder="Repetir Password"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={passwordConfirmationRef}
             />
           </div>
 
