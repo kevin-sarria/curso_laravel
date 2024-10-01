@@ -1,3 +1,4 @@
+export * from './Alerta';
 export * from './Sidebar';
 export * from './Resumen';
 export * from './Categoria';

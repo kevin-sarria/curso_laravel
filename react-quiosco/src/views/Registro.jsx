@@ -1,6 +1,7 @@
 import { createRef, useState } from 'react';
 import { Link } from "react-router-dom"
 import { clienteAxios } from '../config';
+import { Alerta } from '../components';
 
 export const Registro = () => {
 
@@ -8,6 +9,8 @@ export const Registro = () => {
   const emailRef = createRef();
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
+
+  const [ errores, setErrores ] = useState([]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -25,7 +28,7 @@ export const Registro = () => {
       console.log(respuesta);
 
     } catch (error) {
-      console.log(error);
+      setErrores(Object.values(error.response.data.errors));
     }
 
   }
@@ -36,11 +39,16 @@ export const Registro = () => {
       <h1 className="text-4xl font-black">Crea tu Cuenta</h1>
       <p>Crea tu cuenta llenando el formulario</p>
 
-      <div className="bg-white shadow-md rounded-md mt-10 px-55 py-10">
+      <div className="bg-white shadow-md rounded-md mt-10 px-5 py-10">
 
         <form
           onSubmit={handleSubmit}
+          noValidate
         >
+
+          { errores ? errores.map( (error, index) => (
+            <Alerta key={index}>{ error }</Alerta>
+          ) ) : null }
 
           <div className="mb-4">
             <label
