@@ -15,3 +15,4 @@ Route::apiResource('/productos', ProductoController::class);
 
 // Autentiacion
 Route::post('/registro', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);

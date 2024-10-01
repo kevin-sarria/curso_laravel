@@ -1,6 +1,32 @@
+import { createRef, useState } from 'react';
 import { Link } from "react-router-dom"
+import { Alerta } from '../components';
+import { useAuth } from '../hooks';
 
 export const Login = () => {
+
+  const emailRef = createRef();
+  const passwordRef = createRef();
+
+  const [ errores, setErrores ] = useState([]);
+
+  const { login } = useAuth({
+    middleware: 'guest',
+    url: '/'
+  })
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    const datos = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    }
+
+    login(datos, setErrores);
+
+  }
+
   return (
     <>
 
@@ -9,8 +35,14 @@ export const Login = () => {
 
       <div className="bg-white shadow-md rounded-md mt-10 px-55 py-10">
 
-        <form action="">
-
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          
+          { errores ? errores.map( (error, index) => (
+            <Alerta key={index}>{ error }</Alerta>
+          ) ) : null }
 
           <div className="mb-4">
             <label
@@ -26,7 +58,7 @@ export const Login = () => {
               id="email"
               placeholder="Tu Email"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={emailRef}
             />
           </div>
 
@@ -44,7 +76,7 @@ export const Login = () => {
               id="password"
               placeholder="Tu Password"
               className="mt-2 w-full p-3 bg-gray-50"
-              value=""
+              ref={passwordRef}
             />
           </div>
 

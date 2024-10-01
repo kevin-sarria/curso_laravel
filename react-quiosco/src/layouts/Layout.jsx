@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useQuiosco } from '../hooks';
+import { useAuth, useQuiosco } from '../hooks';
 import { Sidebar, Resumen, ModalProducto } from '../components'
 
 const customStyles = {
@@ -20,7 +20,7 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const Layout = () => {
-
+  const { user, error } = useAuth({ middleware: 'auth' });
   const { modal, handleClickModal } = useQuiosco();
 
   return (
