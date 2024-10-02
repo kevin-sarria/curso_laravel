@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 const QuioscoContext = createContext();
 
 const QuioscoProvider = ({ children }) => {
-
     const [ categorias, setCategorias ] = useState([]);
     const [ categoriaActual, setCategoriaActual ] = useState({});
     const [ modal, setModal ] = useState(false);
     const [ producto, setProducto ] = useState(false);
     const [ pedido, setPedido ] = useState([]);
     const [ total, setTotal ] = useState(0);
+
 
     useEffect( () => {
         const nuevoTotal = pedido.reduce( ( total, producto ) => ( producto.precio * producto.cantidad ) + total, 0 );
@@ -69,18 +69,37 @@ const QuioscoProvider = ({ children }) => {
         toast.success('Eliminado del pedido');
     }
 
-    const handleSubmitNuevaOrden = async() => {
+    const handleSubmitNuevaOrden = async(logout) => {
 
         const token = localStorage.getItem('AUTH_TOKEN');
 
         try {
-            await clienteAxios.post('/api/pedidos', {
-                
+            const { data } = await clienteAxios.post('/api/pedidos', {
+                total,
+                productos: pedido.map( producto => {
+                    return {
+                        id: producto.id,
+                        cantidad: producto.cantidad
+                    }
+                } ),
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+            toast.success(data?.message);
+
+            setTimeout( () => {
+                setPedido([]);
+            }, 1000 );
+
+            // Cerrar Sesion del usuario
+            setTimeout( () => {
+                localStorage.removeItem('AUTH_TOKEN');
+                logout();
+            }, 3000 );
+
         } catch (error) {
             console.log(error);
         }

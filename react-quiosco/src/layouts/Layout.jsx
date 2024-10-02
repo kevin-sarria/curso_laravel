@@ -20,8 +20,8 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const Layout = () => {
-  const { user, error } = useAuth({ middleware: 'auth' });
-  const { modal, handleClickModal } = useQuiosco();
+  useAuth({ middleware: 'auth' });
+  const { modal } = useQuiosco();
 
   return (
     <>

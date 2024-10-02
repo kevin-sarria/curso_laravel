@@ -1,10 +1,11 @@
 import { functions } from "../helpers";
-import { useQuiosco } from "../hooks"
+import { useAuth, useQuiosco } from "../hooks"
 import { ResumenProducto } from "./";
 
 export const Resumen = () => {
 
   const { pedido, total, handleSubmitNuevaOrden } = useQuiosco();
+  const { logout } = useAuth({});
 
   const { formatearDinero } = functions;
 
@@ -14,8 +15,7 @@ export const Resumen = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    handleSubmitNuevaOrden();
+    handleSubmitNuevaOrden(logout);
   }
 
   return (

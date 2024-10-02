@@ -5,3 +5,4 @@ export * from './Categoria';
 export * from './Producto';
 export * from './ModalProducto';
 export * from './ResumenProducto';
+export * from './AdminSidebar';

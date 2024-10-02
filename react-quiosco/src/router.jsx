@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthLayout, Layout } from './layouts';
-import { Inicio, Login, Registro } from './views';
+import { AdminLayout, AuthLayout, Layout } from './layouts';
+import { Inicio, Login, Ordenes, Productos, Registro } from './views';
 
 const router = createBrowserRouter([
     {
@@ -27,6 +27,20 @@ const router = createBrowserRouter([
             },
         ]
     },
+    {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+            {
+                index: true,
+                element: <Ordenes />
+            },
+            {
+                path: '/admin/productos',
+                element: <Productos />
+            }
+        ]
+    }
 ]);
 
 export default router;

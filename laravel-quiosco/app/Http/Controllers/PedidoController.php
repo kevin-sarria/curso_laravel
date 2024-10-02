@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Pedido;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PedidoCollection;
+use App\Models\PedidoProducto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
@@ -13,7 +17,7 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        //
+        return new PedidoCollection(Pedido::with('user')->with('productos')->where('estado', 0)->get());
     }
 
     /**
@@ -21,9 +25,39 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
+
+        // Almacenar una orden
+        $pedido = new Pedido;
+        $pedido->user_id = Auth::user()->id;
+        $pedido->total = $request->total;
+        $pedido->save();
+
+        // Obtener el ID del pedido
+        $id = $pedido->id;
+
+        // Obtener los productos que contiene esa orden
+        $productos = $request->productos;
+
+        // Formatear el arreglo
+        $pedido_producto = [];
+
+        foreach( $productos as $producto ) {
+            $pedido_producto[] = [
+                'pedido_id' => $id,
+                'producto_id' => $producto['id'],
+                'cantidad' => $producto['cantidad'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ];
+        }
+
+        // Almacenar en la BD
+        PedidoProducto::insert($pedido_producto);
+
+
         return response([
-            "mensaje" => "Tomando Pedido..."
-        ], 200);
+            "message" => "Pedido Realizado Correctamente, estara listo en unos minutos"
+        ]);
     }
 
     /**
