@@ -4,12 +4,18 @@ import { ResumenProducto } from "./";
 
 export const Resumen = () => {
 
-  const { pedido, total } = useQuiosco();
+  const { pedido, total, handleSubmitNuevaOrden } = useQuiosco();
 
   const { formatearDinero } = functions;
 
   const comprobarPedido = () => {
     return pedido.length < 1;
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    handleSubmitNuevaOrden();
   }
 
   return (
@@ -32,7 +38,10 @@ export const Resumen = () => {
         <span>{ formatearDinero(total) }</span>
       </p>
 
-      <form className="w-full">
+      <form
+        className="w-full"
+        onClick={handleSubmit}
+      >
 
         <div className="mt-5">
 

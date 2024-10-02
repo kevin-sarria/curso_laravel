@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { clienteAxios } from "../config";
 import { useEffect } from 'react';
-import { useFormAction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const useAuth = ({ middleware, url }) => {
 
@@ -30,12 +30,30 @@ export const useAuth = ({ middleware, url }) => {
           }
     }
 
-    const registro = () => {
-
+    const registro = async( datos, setErrores ) => {
+        try {
+            const { data } = await clienteAxios.post('/api/registro', datos);
+            localStorage.setItem('AUTH_TOKEN', data?.token);
+            setErrores([]);
+            await mutate();
+          } catch (error) {
+            setErrores(Object.values(error.response.data.errors));
+          }
     }
 
-    const logout = () => {
+    const logout = async() => {
+        try {
+            await clienteAxios.post('/api/logout', null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
+            localStorage.removeItem('AUTH_TOKEN');
+            await mutate(undefined);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect( () => {

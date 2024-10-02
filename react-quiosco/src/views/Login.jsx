@@ -33,7 +33,7 @@ export const Login = () => {
       <h1 className="text-4xl font-black">Iniciar Sesion</h1>
       <p>Para crear un pedido debes iniciar sesion</p>
 
-      <div className="bg-white shadow-md rounded-md mt-10 px-55 py-10">
+      <div className="bg-white shadow-md rounded-md mt-10 px-5 py-10">
 
         <form
           onSubmit={handleSubmit}

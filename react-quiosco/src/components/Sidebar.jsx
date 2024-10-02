@@ -1,9 +1,10 @@
-import { useQuiosco } from '../hooks';
+import { useAuth, useQuiosco } from '../hooks';
 import { Categoria } from './';
 
 export const Sidebar = () => {
 
   const { categorias } = useQuiosco();
+  const { logout, user } = useAuth({ middleware: 'auth' });
 
   return (
     <aside className="md:w-72">
@@ -15,6 +16,8 @@ export const Sidebar = () => {
           className="w-40"
         />
       </div>
+
+      <p className='my-10 text-xl text-center '>Hola: { user?.name }</p>
 
       <div className="mt-10">
         { categorias.map( (categoria) => (
@@ -29,6 +32,7 @@ export const Sidebar = () => {
         <button
           type='button'
           className='text-center bg-red-500 hover:bg-red-700 w-full p-3 font-bold text-white truncate'
+          onClick={ () => logout() }
         >
           Cancelar Orden
         </button>
