@@ -17,14 +17,15 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    
+    Route::apiResource('/categorias', CategoriaController::class);
+    Route::apiResource('/productos', ProductoController::class);
 
     // Almacenar ordenes
     Route::apiResource('/pedidos', PedidoController::class);
 
 });
 
-Route::apiResource('/categorias', CategoriaController::class);
-Route::apiResource('/productos', ProductoController::class);
 
 // Autentiacion
 Route::post('/registro', [AuthController::class, 'register']);

@@ -1,16 +1,15 @@
 import useSWR from 'swr';
 
-import { productos as data } from '../data'
 import { Producto } from '../components'
 import { useQuiosco } from '../hooks'
 import { clienteAxios } from '../config';
 
 export const Inicio = () => {
-
   const { categoriaActual } = useQuiosco();
-
+  
   // Consulta SWR
-  const fetcher = () => clienteAxios('/api/productos').then( data => data.data );
+  const token = localStorage.getItem('AUTH_TOKEN');
+  const fetcher = () => clienteAxios('/api/productos', { headers: { Authorization: `Bearer ${token}` } }).then( data => data.data );
   const { data, error, isLoading } = useSWR('/api/productos', fetcher, {
     refreshInterval: 1000
   });
@@ -35,6 +34,7 @@ export const Inicio = () => {
           <Producto
             key={producto.id}
             producto={producto}
+            botonAgregar
           />
         ) ) }
       </div>
